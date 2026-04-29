@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered Smart Home Security Assistant — Monitor, manage, and secure your home with intelligent automation.">
+
+    <title>AI Smart Home Security Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════
+         HEADER
+         ═══════════════════════════════════════════════════════ -->
+    <header id="app-header">
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Security Logo" class="header-logo" id="header-logo">
+            <div class="header-text">
+                <h1>AI Smart Home Security</h1>
+                <p class="header-subtitle">
+                    <span class="status-dot online" id="status-dot"></span>
+                    Assistant Online
+                </p>
+            </div>
+        </div>
+        <div class="header-right">
+            <button id="btn-reset" class="header-btn" title="Reset System">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            </button>
+            <button id="btn-toggle-sidebar" class="header-btn mobile-only" title="Toggle Dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════
+         MAIN LAYOUT
+         ═══════════════════════════════════════════════════════ -->
+    <main id="app-main">
+
+        <!-- ── Sidebar: Smart Home Dashboard ────────────────── -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-section">
+                <h2 class="sidebar-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Home Status
+                </h2>
+                <div class="device-grid" id="device-grid">
+                    <div class="device-card" id="device-door_lock" data-device="door_lock">
+                        <div class="device-icon">🚪</div>
+                        <div class="device-name">Door Lock</div>
+                        <div class="device-status locked" id="status-door_lock">Locked</div>
+                    </div>
+                    <div class="device-card" id="device-alarm" data-device="alarm">
+                        <div class="device-icon">🔔</div>
+                        <div class="device-name">Alarm</div>
+                        <div class="device-status off" id="status-alarm">Off</div>
+                    </div>
+                    <div class="device-card" id="device-camera" data-device="camera">
+                        <div class="device-icon">📷</div>
+                        <div class="device-name">Camera</div>
+                        <div class="device-status active" id="status-camera">Active</div>
+                    </div>
+                    <div class="device-card" id="device-motion_sensor" data-device="motion_sensor">
+                        <div class="device-icon">📡</div>
+                        <div class="device-name">Motion Sensor</div>
+                        <div class="device-status idle" id="status-motion_sensor">Idle</div>
+                    </div>
+                    <div class="device-card" id="device-lights" data-device="lights">
+                        <div class="device-icon">💡</div>
+                        <div class="device-name">Lights</div>
+                        <div class="device-status on" id="status-lights">On</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alert Panel -->
+            <div class="sidebar-section">
+                <h2 class="sidebar-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Security Alerts
+                </h2>
+                <div id="alert-panel" class="alert-panel">
+                    <div class="alert-item info">
+                        <span class="alert-time">Now</span>
+                        <span class="alert-text">System initialized. All nominal.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-section">
+                <h2 class="sidebar-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Quick Actions
+                </h2>
+                <div class="quick-actions" id="quick-actions">
+                    <button class="quick-btn" data-message="Lock all doors">🔒 Lock Doors</button>
+                    <button class="quick-btn" data-message="Turn on the alarm">🔔 Arm Alarm</button>
+                    <button class="quick-btn" data-message="Check my home security status">📊 Check Status</button>
+                    <button class="quick-btn" data-message="Turn on all cameras">📷 Cameras On</button>
+                    <button class="quick-btn" data-message="Is my home safe right now?">🛡️ Safety Check</button>
+                    <button class="quick-btn" data-message="What should I do before going to bed?">🌙 Night Mode</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── Chat Area ────────────────────────────────────── -->
+        <section id="chat-section" class="chat-section">
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="chat-messages">
+                <!-- Welcome message (added by JS) -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="typing-indicator hidden">
+                <div class="typing-avatar">🛡️</div>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div id="chat-input-area" class="chat-input-area">
+                <div class="input-wrapper">
+                    <input
+                        type="text"
+                        id="chat-input"
+                        class="chat-input"
+                        placeholder="Ask about home security or give a command..."
+                        autocomplete="off"
+                        maxlength="500"
+                    >
+                    <button id="btn-send" class="btn-send" title="Send message">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
+                </div>
+                <p class="input-hint">Press Enter to send • Try "Lock the door" or "Is my home safe?"</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════════════════════ -->
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+
+</body>
+</html>
