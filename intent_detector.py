@@ -58,6 +58,7 @@ def extract_device(message):
     """
     Extract which device the user is referring to.
     Checks longer aliases first to avoid partial matches.
+    Falls back to door_lock for lock/unlock commands without a device.
     """
     msg = message.lower().strip()
 
@@ -65,6 +66,10 @@ def extract_device(message):
     for alias in sorted(DEVICE_ALIASES.keys(), key=len, reverse=True):
         if alias in msg:
             return DEVICE_ALIASES[alias]
+
+    # Fallback: "lock"/"unlock" without a device = door
+    if any(w in msg for w in ["lock", "unlock"]):
+        return "door_lock"
 
     return None
 
