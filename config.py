@@ -9,7 +9,7 @@ load_dotenv()
 
 # ── API & App Settings ──────────────────────────────────────
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-2.0-flash"
 SECRET_KEY = os.getenv("SECRET_KEY", "smart-home-security-secret-key-2026")
 
 # ── System Prompt ───────────────────────────────────────────
